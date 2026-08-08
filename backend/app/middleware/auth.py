@@ -10,7 +10,9 @@ def verify_api_key(
     settings: Settings = Depends(get_settings)
 ):
     """Verifies that the incoming request headers carry the valid X-API-Key."""
-    expected_key = settings.api_secret_key
+    expected_key = (settings.api_secret_key or "").strip().strip('"').strip("'")
+    provided_key = (x_api_key or "").strip().strip('"').strip("'")
+    
     if not expected_key:
         logger.error("API_SECRET_KEY is not set in the configuration.")
         raise HTTPException(
@@ -18,8 +20,10 @@ def verify_api_key(
             detail="Server configuration error. Contact the administrator."
         )
         
-    if not x_api_key or x_api_key != expected_key:
-        logger.warning(f"Unauthorized access attempt. Valid key provided: {x_api_key is not None}")
+    if not provided_key or provided_key != expected_key:
+        logger.warning(
+            f"Unauthorized access attempt. Expected key length: {len(expected_key)}, Provided key length: {len(provided_key)}"
+        )
         raise HTTPException(
             status_code=401,
             detail="Invalid or missing API Key"

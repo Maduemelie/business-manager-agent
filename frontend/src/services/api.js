@@ -9,7 +9,8 @@ export const API_BASE_URL = rawBaseUrl.trim().replace(/\/+$/, '').replace(/\/api
  * @returns {Promise<Object>} Response packet data
  */
 export const generateContent = async () => {
-  const secretKey = import.meta.env.VITE_API_SECRET_KEY || '';
+  const rawKey = import.meta.env.VITE_API_SECRET_KEY || '';
+  const secretKey = rawKey.trim().replace(/^["']|["']$/g, '');
   const response = await axios.post(`${API_BASE_URL}/api/generate`, {}, {
     headers: {
       'X-API-Key': secretKey
