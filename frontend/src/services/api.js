@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// Export API base URL: loads from environment variable or dynamically resolves based on local address
-export const API_BASE_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+const rawBaseUrl = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
+// Normalize: remove any trailing slashes and redundant /api suffix
+export const API_BASE_URL = rawBaseUrl.trim().replace(/\/+$/, '').replace(/\/api$/, '');
 
 /**
  * Executes a POST request to generate daily social media content blueprint.
