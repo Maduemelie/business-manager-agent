@@ -25,12 +25,16 @@ def create_app() -> FastAPI:
         description="Business content manager API for luxury perfume social distribution."
     )
     
-    # 1. CORS Middleware setup using clean allowed_origins setting list
-    logger.info(f"Configuring CORSMiddleware with origins: {settings.allowed_origins}")
+    # 1. CORS Middleware setup
+    origins = settings.allowed_origins
+    has_wildcard = "*" in origins or origins == ["*"]
+    
+    logger.info(f"Configuring CORSMiddleware with origins: {origins}, wildcard: {has_wildcard}")
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.allowed_origins,
-        allow_credentials=True,
+        allow_origins=["*"] if has_wildcard else origins,
+        allow_origin_regex=None if has_wildcard else r"^https:\/\/.*\.vercel\.app$",
+        allow_credentials=False if has_wildcard else True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
