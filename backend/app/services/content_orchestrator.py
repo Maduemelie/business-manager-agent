@@ -28,7 +28,7 @@ class ContentOrchestrator:
         self.output_repository = output_repository
         logger.info("ContentOrchestrator initialized with all injected abstractions.")
 
-    async def generate_daily_content(self) -> GenerateResponse:
+    async def generate_daily_content(self, perfume_id: Optional[int] = None) -> GenerateResponse:
         logger.info("Running content generation orchestration pipeline.")
         
         import zoneinfo
@@ -58,7 +58,14 @@ class ContentOrchestrator:
 
         # 4. Perfume selection
         selected_perfume = None
-        if not is_generic:
+        if perfume_id is not None:
+            selected_perfume = self.perfume_selector.repo.get_by_id(perfume_id)
+            if selected_perfume:
+                logger.info(f"Using explicitly requested perfume ID: {perfume_id} ({selected_perfume.perfume_name})")
+            else:
+                logger.warning(f"Explicit perfume ID {perfume_id} not found in database. Falling back to theme/category selection.")
+
+        if not selected_perfume and not is_generic:
             selected_perfume = self.perfume_selector.select_perfume(active_category)
 
         perfume_name = "SirviniStyles Collection"
@@ -96,7 +103,6 @@ class ContentOrchestrator:
 
         # 8. Output repository persist operations
         timestamp = now.strftime("%Y%m%d_%H%M%S")
-        self.output_repository.save_post(timestamp, ai_data)
         
         output_image_name = None
         image_url = None
@@ -108,8 +114,9 @@ class ContentOrchestrator:
             if output_image_name:
                 image_url = self.output_repository.get_image_url(selected_perfume.image_filename)
 
-        # 9. Return response contract
-        return GenerateResponse(
+        # 9. Construct response contract
+        response = GenerateResponse(
+            perfume_id=selected_perfume.id if selected_perfume else None,
             perfume_name=perfume_name,
             brand=brand,
             theme=theme_info.name,
@@ -128,3 +135,8 @@ class ContentOrchestrator:
             image_prompt=ai_data.get("image_prompt"),
             engagement_question=ai_data.get("engagement_question")
         )
+
+        # 10. Persist full response content
+        self.output_repository.save_post(timestamp, response.model_dump())
+
+        return response

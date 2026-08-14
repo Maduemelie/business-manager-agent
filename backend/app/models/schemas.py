@@ -41,6 +41,7 @@ class LLMContentResponse(BaseModel):
     engagement_question: Optional[str] = None
 
 class GenerateResponse(BaseModel):
+    perfume_id: Optional[int] = None
     perfume_name: str
     brand: str
     theme: str
@@ -58,6 +59,9 @@ class GenerateResponse(BaseModel):
     cta: Optional[str] = None
     image_prompt: Optional[str] = None
     engagement_question: Optional[str] = None
+
+class GenerateRequest(BaseModel):
+    perfume_id: Optional[int] = None
 
 class ThemeInfo(BaseModel):
     name: str

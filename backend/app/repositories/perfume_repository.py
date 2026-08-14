@@ -90,6 +90,24 @@ class PerfumeRepository(AbstractPerfumeRepository):
             logger.error(f"Database error during get_by_category for '{category}': {e}", exc_info=True)
             raise DatabaseConnectionError("Database query failed.", detail=str(e))
 
+    def get_by_id(self, perfume_id: int) -> Optional[PerfumeModel]:
+        logger.info(f"Retrieving perfume by ID: {perfume_id}")
+        try:
+            with self._get_session() as session:
+                result = session.execute(text("""
+                    SELECT id, image_filename, perfume_name, brand, description, 
+                           scent_profile, longevity, best_for, category, image_generation_prompt 
+                    FROM perfumes 
+                    WHERE id = :id
+                """), {"id": perfume_id})
+                row = result.fetchone()
+                if row:
+                    return PerfumeModel(**row._asdict())
+                return None
+        except Exception as e:
+            logger.error(f"Database error during get_by_id for ID {perfume_id}: {e}", exc_info=True)
+            raise DatabaseConnectionError("Database query failed.", detail=str(e))
+
     def get_recently_used_ids(self) -> Set[int]:
         try:
             with self._get_session() as session:

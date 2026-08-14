@@ -43,7 +43,7 @@ def test_generate_requires_auth():
 
     # 2. Correct key
     class DummyOrchestrator:
-        async def generate_daily_content(self):
+        async def generate_daily_content(self, perfume_id=None):
             from app.models.schemas import GenerateResponse
             return GenerateResponse(
                 perfume_name="Perfume A",
@@ -65,10 +65,53 @@ def test_router_exception_mapping():
     client = TestClient(app, raise_server_exceptions=False)
     
     class ErrorOrchestrator:
-        async def generate_daily_content(self):
+        async def generate_daily_content(self, perfume_id=None):
             raise ExternalServiceError("Weather fetch failed", "Open-Meteo timeout")
             
     app.dependency_overrides[get_orchestrator] = lambda: ErrorOrchestrator()
     response = client.post("/api/generate", headers={"X-API-Key": "super-secret-key"})
     assert response.status_code == 502
     assert response.json()["detail"] == "External service temporarily unavailable"
+
+def test_generate_with_perfume_id():
+    client = TestClient(app)
+    
+    class DummyOrchestrator:
+        async def generate_daily_content(self, perfume_id=None):
+            from app.models.schemas import GenerateResponse
+            return GenerateResponse(
+                perfume_id=perfume_id,
+                perfume_name=f"Perfume {perfume_id}",
+                brand="Test Brand",
+                theme="Spotlight",
+                week_of_month=2,
+                active_category="Fresh",
+                is_generic=False,
+                main_post="Content details",
+                whatsapp_sequence=[]
+            )
+            
+    app.dependency_overrides[get_orchestrator] = lambda: DummyOrchestrator()
+    response = client.post(
+        "/api/generate", 
+        json={"perfume_id": 42}, 
+        headers={"X-API-Key": "super-secret-key"}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["perfume_id"] == 42
+    assert data["perfume_name"] == "Perfume 42"
+
+def test_get_today_no_content():
+    client = TestClient(app)
+    
+    class DummyOutputRepo:
+        output_dir = "dummy_path_that_does_not_exist"
+        
+    from app.dependencies import get_output_repository
+    app.dependency_overrides[get_output_repository] = lambda: DummyOutputRepo()
+    
+    response = client.get("/api/generate/today", headers={"X-API-Key": "super-secret-key"})
+    assert response.status_code == 200
+    assert response.json() is None
+

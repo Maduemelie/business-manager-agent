@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { generateContent as apiGenerateContent } from '../services/api';
+import { useState, useEffect } from 'react';
+import { generateContent as apiGenerateContent, fetchTodayContent } from '../services/api';
 
 /**
  * Custom React hook managing the content generation state and execution.
@@ -10,11 +10,28 @@ export const useContentGenerator = () => {
   const [postData, setPostData] = useState(null);
   const [error, setError] = useState(null);
 
-  const generateContent = async () => {
+  useEffect(() => {
+    const checkTodayContent = async () => {
+      setLoading(true);
+      try {
+        const todayContent = await fetchTodayContent();
+        if (todayContent) {
+          setPostData(todayContent);
+        }
+      } catch (err) {
+        console.error("Failed to load today's generated content on mount:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkTodayContent();
+  }, []);
+
+  const generateContent = async (perfumeId = null) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await apiGenerateContent();
+      const data = await apiGenerateContent(perfumeId);
       setPostData(data);
       return data;
     } catch (err) {

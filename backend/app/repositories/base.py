@@ -28,6 +28,11 @@ class AbstractPerfumeRepository(ABC):
         """Remove perfume IDs from the selection history."""
         pass
 
+    @abstractmethod
+    def get_by_id(self, perfume_id: int) -> Optional[PerfumeModel]:
+        """Retrieve a specific perfume by its ID."""
+        pass
+
 class AbstractOutputRepository(ABC):
     @abstractmethod
     def save_post(self, timestamp: str, data: dict) -> str:
