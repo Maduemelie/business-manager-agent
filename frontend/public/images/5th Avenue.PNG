@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bg5th" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#2c2419"/><stop offset="100%" stop-color="#0a0805"/></radialGradient>
+    <linearGradient id="gold5th" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fae19c"/><stop offset="50%" stop-color="#c99738"/><stop offset="100%" stop-color="#fdf0cd"/></linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg5th)"/>
+  <ellipse cx="400" cy="880" rx="220" ry="30" fill="#000000" opacity="0.6"/>
+  <rect x="310" y="240" width="180" height="600" fill="url(#gold5th)" opacity="0.8"/>
+  <rect x="320" y="250" width="160" height="580" fill="#18130c"/>
+  <rect x="340" y="140" width="120" height="100" fill="url(#gold5th)"/>
+  <text x="400" y="480" font-family="'Cinzel', serif" font-size="28" font-weight="bold" fill="#fae19c" text-anchor="middle" letter-spacing="4">5th</text>
+  <text x="400" y="525" font-family="'Cinzel', serif" font-size="22" fill="#ffffff" text-anchor="middle" letter-spacing="4">AVENUE</text>
+  <text x="400" y="580" font-family="'Montserrat', sans-serif" font-size="12" fill="#c99738" text-anchor="middle" letter-spacing="3">ELIZABETH ARDEN</text>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#2a1f14"/>
+      <stop offset="100%" stop-color="#0b0b0f"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8c872"/>
+      <stop offset="50%" stop-color="#c59b27"/>
+      <stop offset="100%" stop-color="#f3e09e"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0.05)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.2)"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bgGlow)"/>
+  <ellipse cx="400" cy="850" rx="260" ry="40" fill="#000000" opacity="0.6"/>
+  <rect x="250" y="320" width="300" height="480" rx="30" fill="url(#goldGrad)" opacity="0.85"/>
+  <rect x="260" y="330" width="280" height="460" rx="25" fill="#13110e"/>
+  <rect x="260" y="330" width="280" height="460" rx="25" fill="url(#glassGrad)"/>
+  <rect x="330" y="240" width="140" height="80" rx="10" fill="url(#goldGrad)"/>
+  <rect x="340" y="160" width="120" height="90" rx="8" fill="url(#goldGrad)"/>
+  <rect x="300" y="440" width="200" height="240" rx="10" fill="#1b1712" stroke="url(#goldGrad)" stroke-width="2"/>
+  <text x="400" y="500" font-family="'Cinzel', serif, Georgia" font-size="20" fill="#c59b27" text-anchor="middle" letter-spacing="4">SIRVINISTYLES</text>
+  <line x1="330" y1="520" x2="470" y2="520" stroke="#c59b27" stroke-width="1"/>
+  <text x="400" y="570" font-family="'Montserrat', sans-serif" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="2">LUXURY OIL</text>
+  <text x="400" y="610" font-family="'Montserrat', sans-serif" font-size="14" fill="#a0907a" text-anchor="middle" letter-spacing="3">100% PURE PERFUME</text>
+  <text x="400" y="640" font-family="'Montserrat', sans-serif" font-size="12" fill="#c59b27" text-anchor="middle" letter-spacing="2">50ML / 1.7 FL.OZ</text>
+  <path d="M 280 360 Q 300 700 290 760" stroke="rgba(255,255,255,0.4)" stroke-width="4" fill="none" opacity="0.6"/>
+</svg>

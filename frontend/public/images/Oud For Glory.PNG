@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgOud" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#18150c"/><stop offset="100%" stop-color="#050402"/></radialGradient>
+    <linearGradient id="goldOud" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f5d77f"/><stop offset="50%" stop-color="#b08b26"/><stop offset="100%" stop-color="#dfbb53"/></linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bgOud)"/>
+  <ellipse cx="400" cy="860" rx="250" ry="35" fill="#000000" opacity="0.7"/>
+  <rect x="260" y="270" width="280" height="540" rx="10" fill="#0d0c0a" stroke="url(#goldOud)" stroke-width="4"/>
+  <rect x="330" y="170" width="140" height="100" rx="8" fill="url(#goldOud)"/>
+  <rect x="295" y="420" width="210" height="230" fill="#141310" stroke="url(#goldOud)" stroke-width="2"/>
+  <text x="400" y="490" font-family="'Cinzel', serif" font-size="20" font-weight="bold" fill="#f5d77f" text-anchor="middle" letter-spacing="3">OUD FOR GLORY</text>
+  <text x="400" y="530" font-family="'Cinzel', serif" font-size="14" fill="#dfbb53" text-anchor="middle" letter-spacing="2">BADE'E AL OUD</text>
+  <text x="400" y="580" font-family="'Montserrat', sans-serif" font-size="14" fill="#ffffff" text-anchor="middle" letter-spacing="4">LATTAFA</text>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgWish" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#3b1227"/><stop offset="100%" stop-color="#0e0409"/></radialGradient>
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff9ebb"/><stop offset="50%" stop-color="#d83a75"/><stop offset="100%" stop-color="#ffcad9"/></linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bgWish)"/>
+  <ellipse cx="400" cy="860" rx="240" ry="35" fill="#000000" opacity="0.6"/>
+  <rect x="280" y="300" width="240" height="490" rx="40" fill="url(#pinkGrad)" opacity="0.85"/>
+  <rect x="290" y="310" width="220" height="470" rx="35" fill="#1b0a13"/>
+  <rect x="330" y="200" width="140" height="100" rx="10" fill="url(#pinkGrad)"/>
+  <text x="400" y="490" font-family="'Cinzel', serif" font-size="20" font-weight="bold" fill="#ffcad9" text-anchor="middle" letter-spacing="3">A THOUSAND</text>
+  <text x="400" y="530" font-family="'Cinzel', serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="4">WISHES</text>
+  <text x="400" y="585" font-family="'Montserrat', sans-serif" font-size="12" fill="#ff9ebb" text-anchor="middle" letter-spacing="3">BATH &amp; BODY WORKS</text>
+</svg>
