@@ -36,7 +36,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await generateBtn.click();
 
     // Wait for content panel to appear
-    const contentPanel = page.locator('.content-panel-wrapper, .content-display');
+    const contentPanel = page.locator('.content-panel-wrapper, .content-display').first();
     await expect(contentPanel).toBeVisible();
 
     // Verify Strategy Banner is rendered with week and theme
@@ -44,7 +44,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await expect(strategyBanner.first()).toBeVisible();
 
     // Verify Main Feed caption text is rendered
-    const caption = page.locator('.caption-text, .caption-container');
+    const caption = page.locator('.caption-text, .caption-container').first();
     await expect(caption).toBeVisible();
     const captionText = await caption.innerText();
     expect(captionText.length).toBeGreaterThan(10);
@@ -65,7 +65,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await generateBtn.click();
 
     // Capture generated post title/caption
-    const caption = page.locator('.caption-text, .caption-container');
+    const caption = page.locator('.caption-text, .caption-container').first();
     await expect(caption).toBeVisible();
     const originalCaption = await caption.innerText();
 
@@ -76,7 +76,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await page.reload({ waitUntil: 'domcontentloaded' });
 
     // 5. Verify that post is re-hydrated from IndexedDB and displays exact same caption
-    const postDisplay = page.locator('.caption-text, .caption-container');
+    const postDisplay = page.locator('.caption-text, .caption-container').first();
     await expect(postDisplay).toBeVisible();
     const reloadedCaption = await postDisplay.innerText();
     expect(reloadedCaption).toBe(originalCaption);
@@ -100,7 +100,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await generateBtn.click();
 
     // Verify UI updates without network errors
-    const contentPanel = page.locator('.content-panel-wrapper, .content-display');
+    const contentPanel = page.locator('.content-panel-wrapper, .content-display').first();
     await expect(contentPanel).toBeVisible();
 
     // 4. Switch tabs offline
@@ -111,6 +111,6 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     // 5. Reload while strictly offline
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('.dashboard-container, h1:has-text("SirviniStyles")')).toBeVisible();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
   });
 });

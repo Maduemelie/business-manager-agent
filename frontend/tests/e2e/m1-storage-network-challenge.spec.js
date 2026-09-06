@@ -289,7 +289,7 @@ test.describe('Empirical Challenge: Milestone 1 Storage, Asset Resolution & Zero
     // 2. Trigger Blueprint Generation
     const generateBtn = page.locator('button:has-text("Execute Today\'s Blueprint"), button:has-text("Regenerate"), .btn-primary');
     await generateBtn.click();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
     // 3. Trigger 3 consecutive regenerations
     for (let i = 0; i < 3; i++) {

@@ -54,13 +54,8 @@ export const useContentGenerator = () => {
           setIsReady(true);
         }
         const todayContent = await getTodayBlueprint();
-        if (isMounted && todayContent) {
-          setPostData(todayContent);
-        } else if (isMounted) {
-          const allPosts = await getAllFromStore(STORES.POSTS);
-          if (Array.isArray(allPosts) && allPosts.length > 0) {
-            setPostData(allPosts[allPosts.length - 1]);
-          }
+        if (isMounted) {
+          setPostData(todayContent || null);
         }
       } catch (err) {
         console.error("Failed to load today's blueprint from IndexedDB on mount:", err);

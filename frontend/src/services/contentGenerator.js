@@ -360,6 +360,5 @@ export async function getTodayBlueprint(date = new Date()) {
     return todayPosts[todayPosts.length - 1];
   }
 
-  // Fallback: if no post exists for today, return the most recent post if any exists
-  return posts[posts.length - 1] || null;
+  return null;
 }

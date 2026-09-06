@@ -12,7 +12,7 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
     // 1. Generate valid post first to verify baseline database integrity
     const generateBtn = page.locator('button:has-text("Execute Today\'s Blueprint"), button:has-text("Regenerate"), .btn-primary');
     await generateBtn.click();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
     
     const initialPerfumeCount = await getStoreCount(page, 'perfumes');
     const initialPostCount = await getStoreCount(page, 'posts');
@@ -80,7 +80,7 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
     }
 
     // Verify UI is in stable valid state
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
     // Verify IndexedDB selection history does not have corrupted or invalid records
     const history = await getStoreData(page, 'selection_history');
@@ -102,7 +102,7 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
     await insertStoreData(page, 'posts', mockPosts);
 
     // 2. Trigger Export
-    const exportBtn = page.locator('button:has-text("Export"), button:has-text("Backup"), [data-testid="export-backup-btn"]');
+    const exportBtn = page.locator('[data-testid="export-backup-btn"]').first();
     const [download] = await Promise.all([
       page.waitForEvent('download'),
       exportBtn.click(),
@@ -119,10 +119,11 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
   });
 
   test('T2.5: Image loading fallback gracefully displays without crashing on missing image', async ({ page }) => {
-    // Insert a post with non-existent image path
+    const todayIso = new Date().toISOString().split('T')[0];
+    // Insert a post with non-existent image path for today
     await insertStoreData(page, 'posts', [{
       id: 'missing-image-post',
-      date: '2026-08-26',
+      date: todayIso,
       perfume_id: 999,
       perfume_name: 'Ghost Fragrance',
       brand: 'Phantom',
@@ -134,8 +135,8 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
     await page.reload();
 
     // Verify page loads without uncaught exceptions and shows content display
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
-    await expect(page.locator('.caption-text, .caption-container')).toContainText('Ghost Fragrance');
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
+    await expect(page.locator('.caption-text, .caption-container').first()).toContainText('Ghost Fragrance');
   });
 
   test('Empty state displays clean placeholder state on fresh database', async ({ page }) => {
@@ -144,7 +145,25 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
     await page.reload();
 
     // Verify clean placeholder prompt is shown
-    const placeholder = page.locator('.placeholder-state, text=No Blueprint Executed Yet');
-    await expect(placeholder.first()).toBeVisible();
+    const placeholder = page.locator('.placeholder-state').first();
+    await expect(placeholder).toBeVisible();
+  });
+
+  test('Previous day post is not displayed on a new day when no post exists for today', async ({ page }) => {
+    // Insert a post from yesterday
+    await clearIndexedDB(page);
+    await insertStoreData(page, 'posts', [{
+      id: '2026-08-01-post-12345',
+      date: '2026-08-01',
+      perfume_name: 'Yesterday Scent',
+      main_post: 'Yesterday content'
+    }]);
+
+    await page.reload();
+
+    // Verify clean placeholder state is rendered, NOT yesterday's content
+    const placeholder = page.locator('.placeholder-state').first();
+    await expect(placeholder).toBeVisible();
+    await expect(page.locator('.caption-text, .caption-container').first()).not.toBeVisible();
   });
 });

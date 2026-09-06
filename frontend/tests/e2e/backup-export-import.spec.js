@@ -12,10 +12,10 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     // 1. Generate a post so we have data in posts store
     const generateBtn = page.locator('button:has-text("Execute Today\'s Blueprint"), button:has-text("Regenerate"), .btn-primary');
     await generateBtn.click();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
     // 2. Click Export Backup button and intercept download event
-    const exportBtn = page.locator('button:has-text("Export"), button:has-text("Backup"), [data-testid="export-backup-btn"]');
+    const exportBtn = page.locator('[data-testid="export-backup-btn"]').first();
     await expect(exportBtn).toBeVisible();
 
     const [download] = await Promise.all([
@@ -71,7 +71,7 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     });
 
     // 5. Verify restored post data is rendered on screen
-    const captionContainer = page.locator('.caption-text, .caption-container');
+    const captionContainer = page.locator('.caption-text, .caption-container').first();
     await expect(captionContainer).toBeVisible();
     const captionText = await captionContainer.innerText();
     expect(captionText).toContain('Baccarat Rouge 540');
@@ -86,12 +86,12 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     // 1. Generate content
     const generateBtn = page.locator('button:has-text("Execute Today\'s Blueprint"), button:has-text("Regenerate"), .btn-primary');
     await generateBtn.click();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
-    const originalCaption = await page.locator('.caption-text, .caption-container').innerText();
+    const originalCaption = await page.locator('.caption-text, .caption-container').first().innerText();
 
     // 2. Export Backup
-    const exportBtn = page.locator('button:has-text("Export"), button:has-text("Backup"), [data-testid="export-backup-btn"]');
+    const exportBtn = page.locator('[data-testid="export-backup-btn"]').first();
     const [download] = await Promise.all([
       page.waitForEvent('download'),
       exportBtn.click(),
@@ -126,7 +126,7 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     await page.reload({ waitUntil: 'domcontentloaded' });
 
     // 7. Verify restored state matches original exactly
-    const restoredCaption = await page.locator('.caption-text, .caption-container').innerText();
+    const restoredCaption = await page.locator('.caption-text, .caption-container').first().innerText();
     expect(restoredCaption).toBe(originalCaption);
   });
 
@@ -165,7 +165,7 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     }]);
 
     await page.reload();
-    await expect(page.locator('.caption-text, .caption-container')).toContainText('Session B');
+    await expect(page.locator('.caption-text, .caption-container').first()).toContainText('Session B');
 
     // 3. Import Session A backup file
     const fileInput = page.locator('input[type="file"], [data-testid="import-backup-input"]');
@@ -177,7 +177,7 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
 
     // 4. Verify Session A data replaced Session B data
     await page.waitForTimeout(500);
-    const displayedText = await page.locator('.caption-text, .caption-container').innerText();
+    const displayedText = await page.locator('.caption-text, .caption-container').first().innerText();
     expect(displayedText).toContain('Session A Special Perfume');
     expect(displayedText).not.toContain('Session B Current Fragrance');
   });
@@ -230,7 +230,7 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     });
 
     // 4. Verify user can immediately view their latest post and continue working
-    await expect(page.locator('.caption-text, .caption-container')).toContainText('Creed Aventus');
+    await expect(page.locator('.caption-text, .caption-container').first()).toContainText('Creed Aventus');
 
     // 5. Verify IndexedDB selection history contains both records
     const history = await getStoreData(page, 'selection_history');

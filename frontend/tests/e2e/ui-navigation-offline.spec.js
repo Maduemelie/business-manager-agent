@@ -39,7 +39,7 @@ test.describe('Tier 1, 3 & 4: UI Offline Navigation, Status Banner & Mobile Sell
     // 1. Generate content packet
     const generateBtn = page.locator('button:has-text("Execute Today\'s Blueprint"), button:has-text("Regenerate"), .btn-primary');
     await generateBtn.click();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
     // 2. Cut off network
     await context.setOffline(true);
@@ -64,7 +64,7 @@ test.describe('Tier 1, 3 & 4: UI Offline Navigation, Status Banner & Mobile Sell
     // 5. Switch back to Main Feed tab
     const mainTab = page.locator('button:has-text("Main Feed"), .tab-btn:has-text("Main")');
     await mainTab.click();
-    await expect(page.locator('.caption-text, .caption-container')).toBeVisible();
+    await expect(page.locator('.caption-text, .caption-container').first()).toBeVisible();
   });
 
   test('Copy to clipboard functions properly and provides visual feedback', async ({ page, context }) => {
@@ -74,7 +74,7 @@ test.describe('Tier 1, 3 & 4: UI Offline Navigation, Status Banner & Mobile Sell
     // 2. Generate content
     const generateBtn = page.locator('button:has-text("Execute Today\'s Blueprint"), button:has-text("Regenerate"), .btn-primary');
     await generateBtn.click();
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
     // 3. Click Main Post copy button
     const copyBtn = page.locator('.copy-btn, button:has-text("Copy Caption")').first();
@@ -110,9 +110,9 @@ test.describe('Tier 1, 3 & 4: UI Offline Navigation, Status Banner & Mobile Sell
     await generateBtn.click();
 
     // 3. Main post renders immediately with strategy theme
-    const contentPanel = page.locator('.content-panel-wrapper, .content-display');
+    const contentPanel = page.locator('.content-panel-wrapper, .content-display').first();
     await expect(contentPanel).toBeVisible();
-    const captionElement = page.locator('.caption-text, .caption-container');
+    const captionElement = page.locator('.caption-text, .caption-container').first();
     await expect(captionElement).toBeVisible();
     const morningCaption = await captionElement.innerText();
 
@@ -132,8 +132,8 @@ test.describe('Tier 1, 3 & 4: UI Offline Navigation, Status Banner & Mobile Sell
     await page.reload({ waitUntil: 'domcontentloaded' });
 
     // 7. Verify all content from the morning is perfectly preserved
-    await expect(page.locator('.content-panel-wrapper, .content-display')).toBeVisible();
-    const eveningCaption = await page.locator('.caption-text, .caption-container').innerText();
+    await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
+    const eveningCaption = await page.locator('.caption-text, .caption-container').first().innerText();
     expect(eveningCaption).toBe(morningCaption);
   });
 });
