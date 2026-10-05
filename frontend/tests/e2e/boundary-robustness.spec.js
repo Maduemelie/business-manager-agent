@@ -101,7 +101,8 @@ test.describe('Tier 2: Boundary Value, Corruption Resistance & Stress Hardening'
 
     await insertStoreData(page, 'posts', mockPosts);
 
-    // 2. Trigger Export
+    // 2. Trigger Export via Settings Tab
+    await page.locator('button.tab-btn:has-text("Settings")').click();
     const exportBtn = page.locator('[data-testid="export-backup-btn"]').first();
     const [download] = await Promise.all([
       page.waitForEvent('download'),

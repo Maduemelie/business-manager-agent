@@ -24,6 +24,7 @@ function App() {
   const handleDataRestored = async () => {
     await reloadContent();
     setActiveTab('main');
+    setAppMode('blueprint');
   };
 
   return (
@@ -43,12 +44,17 @@ function App() {
         >
           Business Tracker
         </button>
+        <button 
+          className={`tab-btn ${appMode === 'settings' ? 'active' : ''}`} 
+          onClick={() => setAppMode('settings')}
+        >
+          Settings
+        </button>
       </div>
 
       <OfflineStatusBanner />
-      <BackupControls onDataRestored={handleDataRestored} />
       
-      {appMode === 'blueprint' ? (
+      {appMode === 'blueprint' && (
         <>
           <GenerateButton 
             loading={loading} 
@@ -68,8 +74,18 @@ function App() {
             !loading && <PlaceholderState />
           )}
         </>
-      ) : (
+      )}
+
+      {appMode === 'business' && (
         <BusinessTracker />
+      )}
+
+      {appMode === 'settings' && (
+        <div className="glass-panel w-full max-w-2xl mx-auto" style={{ textAlign: 'center' }}>
+          <h2 className="section-title">Data Management</h2>
+          <p className="text-muted mb-4">Export or import your offline data (Perfumes, Posts, Inventory, Sales).</p>
+          <BackupControls onDataRestored={handleDataRestored} />
+        </div>
       )}
     </div>
   );

@@ -14,7 +14,8 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     await generateBtn.click();
     await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
 
-    // 2. Click Export Backup button and intercept download event
+    // 2. Click Settings Tab then Export Backup button and intercept download event
+    await page.locator('button.tab-btn:has-text("Settings")').click();
     const exportBtn = page.locator('[data-testid="export-backup-btn"]').first();
     await expect(exportBtn).toBeVisible();
 
@@ -54,7 +55,8 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     await clearIndexedDB(page);
     await page.reload();
 
-    // 3. Locate file input (or backup trigger) and upload backup file
+    // 3. Navigate to Settings and locate file input (or backup trigger) and upload backup file
+    await page.locator('button.tab-btn:has-text("Settings")').click();
     const fileInput = page.locator('input[type="file"], [data-testid="import-backup-input"]');
     
     // If input is hidden inside a modal or button, set files directly on the input
@@ -91,6 +93,7 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     const originalCaption = await page.locator('.caption-text, .caption-container').first().innerText();
 
     // 2. Export Backup
+    await page.locator('button.tab-btn:has-text("Settings")').click();
     const exportBtn = page.locator('[data-testid="export-backup-btn"]').first();
     const [download] = await Promise.all([
       page.waitForEvent('download'),
@@ -111,7 +114,8 @@ test.describe('Tier 1, 3 & 4: Manual JSON Backup Export and Import System', () =
     const placeholder = page.locator('.placeholder-state, text=No Blueprint Executed Yet');
     await expect(placeholder.first()).toBeVisible();
 
-    // 4. Import the downloaded backup file
+    // 4. Navigate to Settings and Import the downloaded backup file
+    await page.locator('button.tab-btn:has-text("Settings")').click();
     const fileInput = page.locator('input[type="file"], [data-testid="import-backup-input"]');
     await fileInput.setInputFiles({
       name: 'sirvinistyles-roundtrip-backup.json',
