@@ -123,7 +123,7 @@ test.describe('Tier 1, 3 & 4: UI Offline Navigation, Status Banner & Mobile Sell
     await expect(firstStatusCard).toBeVisible();
 
     // 5. Seller copies morning status message
-    const copyStatusBtn = firstStatusCard.locator('.copy-btn');
+    const copyStatusBtn = firstStatusCard.locator('.copy-btn').first();
     if (await copyStatusBtn.isVisible()) {
       await copyStatusBtn.click();
     }

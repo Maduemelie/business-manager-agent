@@ -11,7 +11,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await page.goto('/');
 
     // Verify header renders
-    const header = page.locator('h1, .header');
+    const header = page.locator('h1, .header').first();
     await expect(header).toBeVisible();
     await expect(page.locator('text=SirviniStyles').first()).toBeVisible();
 
@@ -40,8 +40,8 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
     await expect(contentPanel).toBeVisible();
 
     // Verify Strategy Banner is rendered with week and theme
-    const strategyBanner = page.locator('.strategy-banner, .banner-badge, text=Theme, text=Week');
-    await expect(strategyBanner.first()).toBeVisible();
+    const strategyBanner = page.locator('.strategy-banner, .banner-badge').first();
+    await expect(strategyBanner).toBeVisible();
 
     // Verify Main Feed caption text is rendered
     const caption = page.locator('.caption-text, .caption-container').first();
@@ -110,7 +110,7 @@ test.describe('Tier 1 & Tier 3: Offline-First PWA & IndexedDB Persistence', () =
 
     // 5. Reload while strictly offline
     await page.reload({ waitUntil: 'domcontentloaded' });
-    await expect(page.locator('.dashboard-container, h1:has-text("SirviniStyles")')).toBeVisible();
+    await expect(page.locator('.dashboard-container, h1:has-text("SirviniStyles")').first()).toBeVisible();
     await expect(page.locator('.content-panel-wrapper, .content-display').first()).toBeVisible();
   });
 });

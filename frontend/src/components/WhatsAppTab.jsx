@@ -13,7 +13,10 @@ export default function WhatsAppTab({ sequence }) {
                 
                 {status.image_suggestion && (
                     <div className="whatsapp-suggestion-block">
-                        <strong>📸 Visual Idea:</strong> {status.image_suggestion}
+                        <div className="whatsapp-suggestion-text">
+                            <strong>📸 Visual Idea:</strong> {status.image_suggestion}
+                        </div>
+                        <CopyButton text={status.image_suggestion} label="Copy Idea" />
                     </div>
                 )}
 

@@ -1,13 +1,15 @@
 import seedPerfumes from '../data/seedPerfumes.json';
 
 export const DB_NAME = 'sirvinistyles_db';
-export const DB_VERSION = 1;
+export const DB_VERSION = 2;
 
 export const STORES = {
   PERFUMES: 'perfumes',
   POSTS: 'posts',
   SELECTION_HISTORY: 'selection_history',
-  SETTINGS: 'app_settings'
+  SETTINGS: 'app_settings',
+  INVENTORY: 'inventory',
+  SALES: 'sales'
 };
 
 let dbInstance = null;
@@ -62,6 +64,19 @@ export function openAppDB() {
       // 4. App Settings Store
       if (!db.objectStoreNames.contains(STORES.SETTINGS)) {
         db.createObjectStore(STORES.SETTINGS, { keyPath: 'key' });
+      }
+
+      // 5. Inventory Store
+      if (!db.objectStoreNames.contains(STORES.INVENTORY)) {
+        const inventoryStore = db.createObjectStore(STORES.INVENTORY, { keyPath: 'perfume_id' });
+        inventoryStore.createIndex('stock_quantity', 'stock_quantity', { unique: false });
+      }
+
+      // 6. Sales Store
+      if (!db.objectStoreNames.contains(STORES.SALES)) {
+        const salesStore = db.createObjectStore(STORES.SALES, { keyPath: 'id', autoIncrement: true });
+        salesStore.createIndex('date', 'date', { unique: false });
+        salesStore.createIndex('perfume_id', 'perfume_id', { unique: false });
       }
     };
 

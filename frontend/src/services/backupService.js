@@ -10,6 +10,8 @@ import { openAppDB, getAllFromStore, STORES } from './db';
  * @property {Array<Object>} data.posts
  * @property {Array<Object>} data.selection_history
  * @property {Array<Object>} data.app_settings
+ * @property {Array<Object>} [data.inventory]
+ * @property {Array<Object>} [data.sales]
  */
 
 /**
@@ -18,22 +20,26 @@ import { openAppDB, getAllFromStore, STORES } from './db';
  * @returns {Promise<BackupPayload>}
  */
 export async function exportAppData() {
-  const [perfumes, posts, selection_history, app_settings] = await Promise.all([
+  const [perfumes, posts, selection_history, app_settings, inventory, sales] = await Promise.all([
     getAllFromStore(STORES.PERFUMES),
     getAllFromStore(STORES.POSTS),
     getAllFromStore(STORES.SELECTION_HISTORY),
-    getAllFromStore(STORES.SETTINGS)
+    getAllFromStore(STORES.SETTINGS),
+    getAllFromStore(STORES.INVENTORY),
+    getAllFromStore(STORES.SALES)
   ]);
 
   const payload = {
     app: 'sirvinistyles',
-    version: 1,
+    version: 1, // Still v1 schema, just added optional fields
     exported_at: new Date().toISOString(),
     data: {
       perfumes: perfumes || [],
       posts: posts || [],
       selection_history: selection_history || [],
-      app_settings: app_settings || []
+      app_settings: app_settings || [],
+      inventory: inventory || [],
+      sales: sales || []
     }
   };
 
@@ -119,7 +125,7 @@ export function validateBackupSchema(jsonContent) {
     };
   }
 
-  const { perfumes, posts, selection_history, app_settings } = parsed.data;
+  const { perfumes, posts, selection_history, app_settings, inventory, sales } = parsed.data;
 
   if (!Array.isArray(perfumes)) {
     return {
@@ -146,6 +152,20 @@ export function validateBackupSchema(jsonContent) {
     return {
       valid: false,
       error: 'Invalid backup schema: "data.app_settings" must be an array.'
+    };
+  }
+
+  if (inventory && !Array.isArray(inventory)) {
+    return {
+      valid: false,
+      error: 'Invalid backup schema: "data.inventory" must be an array if present.'
+    };
+  }
+
+  if (sales && !Array.isArray(sales)) {
+    return {
+      valid: false,
+      error: 'Invalid backup schema: "data.sales" must be an array if present.'
     };
   }
 
@@ -188,7 +208,7 @@ export function validateBackupSchema(jsonContent) {
  * Validates, clears all stores, and restores full application data in a single transactional batch.
  * 
  * @param {any} jsonContent 
- * @returns {Promise<{ success: boolean, stats: { perfumes: number, posts: number, selection_history: number, app_settings: number } }>}
+ * @returns {Promise<{ success: boolean, stats: { perfumes: number, posts: number, selection_history: number, app_settings: number, inventory: number, sales: number } }>}
  */
 export async function importAppData(jsonContent) {
   const validation = validateBackupSchema(jsonContent);
@@ -203,7 +223,9 @@ export async function importAppData(jsonContent) {
     STORES.PERFUMES,
     STORES.POSTS,
     STORES.SELECTION_HISTORY,
-    STORES.SETTINGS
+    STORES.SETTINGS,
+    STORES.INVENTORY,
+    STORES.SALES
   ];
 
   return new Promise((resolve, reject) => {
@@ -251,6 +273,20 @@ export async function importAppData(jsonContent) {
         settingsStore.put(setting);
       }
 
+      // 5. Insert Inventory
+      const inventoryStore = tx.objectStore(STORES.INVENTORY);
+      const inventoryData = payload.data.inventory || [];
+      for (const inv of inventoryData) {
+        inventoryStore.put(inv);
+      }
+
+      // 6. Insert Sales
+      const salesStore = tx.objectStore(STORES.SALES);
+      const salesData = payload.data.sales || [];
+      for (const sale of salesData) {
+        salesStore.put(sale);
+      }
+
       tx.oncomplete = () => {
         resolve({
           success: true,
@@ -258,7 +294,9 @@ export async function importAppData(jsonContent) {
             perfumes: payload.data.perfumes.length,
             posts: payload.data.posts.length,
             selection_history: payload.data.selection_history.length,
-            app_settings: payload.data.app_settings.length
+            app_settings: payload.data.app_settings.length,
+            inventory: inventoryData.length,
+            sales: salesData.length
           }
         });
       };
