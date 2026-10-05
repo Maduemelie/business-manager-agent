@@ -14,9 +14,16 @@
 /* Metrics Grid */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
 }
 
 .metric-card {
@@ -43,9 +50,16 @@
 
 .metric-value {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--text-main);
+  word-break: break-word;
+}
+
+@media (min-width: 768px) {
+  .metric-value {
+    font-size: 1.8rem;
+  }
 }
 
 .metric-value.profit, .profit-text {
@@ -55,6 +69,7 @@
 /* Tables */
 .table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--card-border);
   border-radius: 12px;
 }

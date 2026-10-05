@@ -30,7 +30,7 @@ function App() {
     <div className="dashboard-container">
       <Header />
       
-      <div className="tabs-header justify-center mb-6 w-full max-w-4xl">
+      <div className="tabs-header mb-6 w-full max-w-4xl">
         <button 
           className={`tab-btn ${appMode === 'blueprint' ? 'active' : ''}`} 
           onClick={() => setAppMode('blueprint')}

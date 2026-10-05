@@ -29,7 +29,7 @@ export default function BusinessTracker() {
 
   return (
     <div className="business-tracker w-full max-w-4xl mx-auto mt-8">
-      <div className="tracker-nav tabs-header justify-center mb-6">
+      <div className="tracker-nav tabs-header mb-6">
         <button className={`tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>Dashboard</button>
         <button className={`tab-btn ${activeTab === 'inventory' ? 'active' : ''}`} onClick={() => setActiveTab('inventory')}>Inventory</button>
         <button className={`tab-btn ${activeTab === 'sales' ? 'active' : ''}`} onClick={() => setActiveTab('sales')}>Sales</button>
